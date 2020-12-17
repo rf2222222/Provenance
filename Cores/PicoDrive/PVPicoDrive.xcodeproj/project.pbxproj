@@ -1512,7 +1512,6 @@
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = PV;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Provenance Emu";
@@ -1771,6 +1770,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Debug;
 		};
@@ -1816,6 +1816,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Release;
 		};
@@ -1860,6 +1861,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "";
 				SDKROOT = iphoneos;
+				VALIDATE_WORKSPACE = YES;
 			};
 			name = Archive;
 		};
