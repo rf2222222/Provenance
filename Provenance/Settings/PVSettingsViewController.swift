@@ -98,7 +98,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
 
         // -- Core Options
         let realm = try! Realm()
-        let cores: [NavigationRow<SystemSettingsCell>] = realm.objects(PVCore.self).sorted(byKeyPath: "identifier").compactMap { pvcore in
+        let cores: [NavigationRow<SystemSettingsCell>] = realm.objects(PVCore.self).sorted(byKeyPath: "projectName").compactMap { pvcore in
             guard let coreClass = NSClassFromString(pvcore.principleClass) as? CoreOptional.Type else {
                 DLOG("Class <\(pvcore.principleClass)> does not implement CoreOptional")
                 return nil
@@ -151,6 +151,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
             avRows.append(PVSettingsSliderRow(text: "Volume", detailText: nil, valueLimits: (min: 0.0, max: 1.0), key: \PVSettingsModel.volume))
         avRows.append(contentsOf: [
             PVSettingsSwitchRow(text: "Native Scale", key: \PVSettingsModel.nativeScaleEnabled),
+            PVSettingsSwitchRow(text: "Integer Scaling", key: \PVSettingsModel.integerScaleEnabled),
             PVSettingsSwitchRow(text: "CRT Filter", key: \PVSettingsModel.crtFilterEnabled),
             PVSettingsSwitchRow(text: "Image Smoothing", key: \PVSettingsModel.imageSmoothing),
             PVSettingsSwitchRow(text: "FPS Counter", key: \PVSettingsModel.showFPSCount)
@@ -158,6 +159,10 @@ final class PVSettingsViewController: PVQuickTableViewController {
         #else
         avRows.append(contentsOf: [
             PVSettingsSwitchRow(text: "Native Scale", key: \PVSettingsModel.nativeScaleEnabled,
+                customization: { cell, _ in
+                cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular)
+                }),
+            PVSettingsSwitchRow(text: "Integer Scaling", key: \PVSettingsModel.integerScaleEnabled,
                 customization: { cell, _ in
                 cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular)
                 }),
@@ -221,12 +226,12 @@ final class PVSettingsViewController: PVQuickTableViewController {
                 detailText: .subtitle(""),
                 key: \PVSettingsModel.webDavAlwaysOn,
                 customization: { cell, _ in
-                    cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular) // needs pr
+                    cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular)
                     if PVSettingsModel.shared.webDavAlwaysOn {
                         let subTitleText = "WebDAV: \(PVWebServer.shared.webDavURLString)"
                         let subTitleAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20), NSAttributedString.Key.foregroundColor: UIColor.gray]
                         let subTitleAttrString = NSMutableAttributedString(string: subTitleText, attributes: subTitleAttributes)
-                        //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular) // needs pr
+                        //cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
                         cell.detailTextLabel?.attributedText = subTitleAttrString
                     } else {
                         cell.detailTextLabel?.text = nil
@@ -299,8 +304,8 @@ final class PVSettingsViewController: PVQuickTableViewController {
                                 detailText: .subtitle("Sync core & battery saves, screenshots and BIOS's to iCloud."),
                                 key: \PVSettingsModel.debugOptions.iCloudSync,
                                     customization: { cell, _ in
-                                        cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular) // needs pr
-                                        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular) // needs pr
+                                        cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular)
+                                        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
                             }
             ),
 
@@ -308,8 +313,8 @@ final class PVSettingsViewController: PVQuickTableViewController {
                                 detailText: .subtitle("Use tvOS's EAGLContext multiThreaded. May improve or slow down GL performance."),
                                 key: \PVSettingsModel.debugOptions.multiThreadedGL,
                                     customization: { cell, _ in
-                                        cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular) // needs pr
-                                        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular) // needs pr
+                                        cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular)
+                                        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
                             }
             ),
 
@@ -317,8 +322,8 @@ final class PVSettingsViewController: PVQuickTableViewController {
                                 detailText: .subtitle("Use tvOS's EAGLContext multisampling. Slower speed (slightly), smoother edges."),
                                 key: \PVSettingsModel.debugOptions.multiSampling,
                                     customization: { cell, _ in
-                                        cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular) // needs pr
-                                        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular) // needs pr
+                                        cell.textLabel?.font = UIFont.systemFont(ofSize: 30, weight: UIFont.Weight.regular)
+                                        cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.regular)
                                 }
             ),
                 ]

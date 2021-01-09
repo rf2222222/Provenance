@@ -342,11 +342,6 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
         gameAudio.outputDeviceID = 0
         gameAudio.start()
 
-        // stupid bug in tvOS 9.2
-        // the controller paused handler (if implemented) seems to cause a 'back' navigation action
-        // as well as calling the pause handler itself. Which breaks the menu functionality.
-        // But of course, this isn't the case on iOS 9.3. YAY FRAGMENTATION. ¬_¬
-        // Conditionally handle the pause menu differently dependning on tvOS or iOS. FFS.
         #if os(tvOS)
             // Adding a tap gesture recognizer for the menu type will override the default 'back' functionality of tvOS
             if menuGestureRecognizer == nil {
@@ -356,12 +351,13 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
             if let aRecognizer = menuGestureRecognizer {
                 view.addGestureRecognizer(aRecognizer)
             }
-        #endif
-        GCController.controllers().filter({ $0.vendorName != "Remote" }).forEach { [unowned self] in
-            $0.controllerPausedHandler = { controller in
-                self.controllerPauseButtonPressed(controller)
+        #else
+            GCController.controllers().filter({ $0.vendorName != "Remote" }).forEach { [unowned self] in
+                $0.controllerPausedHandler = { controller in
+                    self.controllerPauseButtonPressed(controller)
+                }
             }
-        }
+        #endif
     }
 
     public override func viewDidAppear(_: Bool) {
@@ -520,7 +516,7 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
         gameAudio.start()
     }
 
-    func enableContorllerInput(_ enabled: Bool) {
+    func enableControllerInput(_ enabled: Bool) {
         #if os(tvOS)
             controllerUserInteractionEnabled = enabled
         #else
@@ -543,7 +539,7 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
     }
 
     func hideMenu() {
-        enableContorllerInput(false)
+        enableControllerInput(false)
         if presentedViewController is UIAlertController {
             dismiss(animated: true) { () -> Void in }
             isShowingMenu = false
@@ -613,7 +609,7 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
                 self.core.gameSpeed = GameSpeed(rawValue: idx) ?? .normal
                 self.core.setPauseEmulation(false)
                 self.isShowingMenu = false
-                self.enableContorllerInput(false)
+                self.enableControllerInput(false)
             })
             actionSheet.addAction(action)
             if idx == self.core.gameSpeed.rawValue {
@@ -646,7 +642,7 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
         gameAudio.stop()
 
         dismiss(animated: true, completion: completion)
-        enableContorllerInput(false)
+        enableControllerInput(false)
         updatePlayedDuration()
     }
 }
@@ -691,11 +687,11 @@ extension PVEmulatorViewController {
             menuButton?.isHidden = true
             // In instances where the controller is connected *after* the VC has been shown, we need to set the pause handler
             // Except for the Apple Remote, where it's handled in the menuGestureRecognizer
-            if controller?.vendorName != "Remote" {
-                controller?.controllerPausedHandler = { [unowned self] controller in
-                    self.controllerPauseButtonPressed(controller)
-                }
-            }
+//             if controller?.vendorName != "Remote" {
+//                 controller?.controllerPausedHandler = { [unowned self] controller in
+//                     self.controllerPauseButtonPressed(controller)
+//                 }
+//             }
             #if os(iOS)
                 if #available(iOS 11.0, *) {
                     setNeedsUpdateOfHomeIndicatorAutoHidden()
@@ -771,7 +767,7 @@ extension PVEmulatorViewController {
         guard let core = self.core as? (PVEmulatorCore & DiscSwappable) else {
             presentError("Internal error: No core found.")
             isShowingMenu = false
-            enableContorllerInput(false)
+            enableControllerInput(false)
             return
         }
 
@@ -780,7 +776,7 @@ extension PVEmulatorViewController {
             presentError("Game only supports 1 disc.")
             core.setPauseEmulation(false)
             isShowingMenu = false
-            enableContorllerInput(false)
+            enableControllerInput(false)
             return
         }
 
@@ -796,7 +792,7 @@ extension PVEmulatorViewController {
 
                 core.setPauseEmulation(false)
                 self.isShowingMenu = false
-                self.enableContorllerInput(false)
+                self.enableControllerInput(false)
             }))
         }
 
@@ -804,7 +800,7 @@ extension PVEmulatorViewController {
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { [unowned self] _ in
             core.setPauseEmulation(false)
             self.isShowingMenu = false
-            self.enableContorllerInput(false)
+            self.enableControllerInput(false)
         }))
 
         // Present
@@ -832,7 +828,7 @@ extension PVEmulatorViewController {
         presentedViewController?.dismiss(animated: true, completion: nil)
         core.setPauseEmulation(false)
         isShowingMenu = false
-        enableContorllerInput(false)
+        enableControllerInput(false)
     }
 }
 
