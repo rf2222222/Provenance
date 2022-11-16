@@ -465,7 +465,7 @@ Provenance would not be possible without the great work of those who came before
         <a href="https://github.com/nenge123">
             <img src="https://avatars.githubusercontent.com/u/16117315?v=4" width="100;" alt="nenge123"/>
             <br />
-            <sub><b>nenge123</b></sub>
+            <sub><b>Nenge123</b></sub>
         </a>
     </td>
     <td align="center">
