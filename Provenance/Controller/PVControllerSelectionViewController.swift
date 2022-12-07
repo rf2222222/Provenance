@@ -34,10 +34,6 @@ final class PVControllerSelectionViewController: UITableViewController {
 
         let labelText = "Player \(indexPath.row + 1)"
 
-        #if os(iOS)
-            cell.textLabel?.textColor = Theme.currentTheme.settingsCellText
-        #endif
-
         cell.textLabel?.text = labelText
 
         var controller: GCController?
@@ -131,8 +127,6 @@ final class PVControllerSelectionViewController: UITableViewController {
             }
             PVControllerManager.shared.stopListeningForICadeControllers()
         }))
-
-        actionSheet.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: "Cancel"), style: .cancel, handler: nil))
 
         present(actionSheet, animated: true, completion: { () -> Void in
             PVControllerManager.shared.listenForICadeControllers(window: actionSheet.view.window, preferredPlayer: indexPath.row + 1, completion: { () -> Void in

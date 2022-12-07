@@ -17,7 +17,7 @@
 //#import "mupen64plus-core/src/main/main.h"
 @import Dispatch;
 @import PVSupport;
-#if TARGET_OS_MACCATALYST
+#if TARGET_OS_MACCATALYST || TARGET_OS_OSX
 @import OpenGL.GL3;
 @import GLUT;
 #else
@@ -136,7 +136,9 @@ void MupenControllerCommand(int Control, unsigned char *Command) {
             {
                 if (*Data)
                 {
+#if TARGET_OS_IOS && !TARGET_OS_MACCATALYST
                     [current rumble];
+#endif
 //                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 //                    rumble.set_rumble_state(Control, RETRO_RUMBLE_WEAK, 0xFFFF);
 //                    rumble.set_rumble_state(Control, RETRO_RUMBLE_STRONG, 0xFFFF);

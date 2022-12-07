@@ -37,7 +37,7 @@ final class PVConflictViewController: UITableViewController {
             splitViewController?.title = "Solve Conflicts"
         #else
             let currentTableview = tableView!
-            tableView = SettingsTableView(frame: currentTableview.frame, style: currentTableview.style)
+            tableView = UITableView(frame: currentTableview.frame, style: currentTableview.style)
 
             title = "Solve Conflicts"
             tableView.separatorColor = UIColor.clear
@@ -69,10 +69,6 @@ final class PVConflictViewController: UITableViewController {
                 cell.textLabel?.textAlignment = .center
                 cell.accessoryType = .none
             }
-
-            #if os(iOS)
-                cell.textLabel?.textColor = Theme.currentTheme.settingsCellText
-            #endif
         }
         .disposed(by: disposeBag)
 
@@ -112,10 +108,11 @@ final class PVConflictViewController: UITableViewController {
                 }
             })
             .bind(onNext: { conflict, indexPath in
+                let showsUnsupportedSystems = PVSettingsModel.shared.debugOptions.unsupportedCores
                 let alertController = UIAlertController(title: "Choose a System", message: nil, preferredStyle: .actionSheet)
                 alertController.popoverPresentationController?.sourceView = self.view
                 alertController.popoverPresentationController?.sourceRect = self.tableView.rectForRow(at: indexPath)
-                conflict.candidates.forEach { system in
+                conflict.candidates.filter{ $0.supported || showsUnsupportedSystems }.forEach { system in
                     alertController.addAction(.init(title: system.name, style: .default, handler: { _ in
                         self.conflictsController.resolveConflicts(withSolutions: [conflict.path: system])
                     }))

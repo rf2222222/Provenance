@@ -329,7 +329,7 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
         //			presentingViewController?.presentError("File doesn't exist at path \(romPath.absoluteString)")
         //			return
         //		}
-
+        
         do {
             try core.loadFile(atPath: romPath.path)
         } catch {
@@ -373,7 +373,7 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
             }
             gpuViewController.didMove(toParent: self)
         }
-        #if os(iOS) && !targetEnvironment(macCatalyst)
+        #if os(iOS) && !targetEnvironment(macCatalyst) && !os(macOS)
             addControllerOverlay()
             initMenuButton()
         #endif
@@ -386,11 +386,12 @@ final class PVEmulatorViewController: PVEmulatorViewControllerRootClass, PVAudio
 
         convertOldSaveStatesToNewIfNeeded()
 
-        core.startEmulation()
-
         gameAudio.volume = PVSettingsModel.shared.volume
         gameAudio.outputDeviceID = 0
         gameAudio.start()
+        
+        core.startEmulation()
+
         #if os(tvOS)
         // On tvOS the siri-remotes menu-button will default to go back in the hierachy (thus dismissing the emulator), we don't want that behaviour
         // (we'd rather pause the game), so we just install a tap-recognizer here (that doesn't do anything), and add our own logic in `setupPauseHandler`

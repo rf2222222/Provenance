@@ -61,11 +61,6 @@ final class PVSettingsViewController: PVQuickTableViewController {
                 self.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-
-        #if os(iOS)
-            navigationItem.leftBarButtonItem?.tintColor = Theme.currentTheme.barButtonItemTint
-            navigationItem.rightBarButtonItem?.tintColor = Theme.currentTheme.barButtonItemTint
-        #endif
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -89,24 +84,47 @@ final class PVSettingsViewController: PVQuickTableViewController {
 
         // -- Section : App
         let systemsRow = SegueNavigationRow(text: NSLocalizedString("Systems", comment: "Systems"), viewController: self, segue: "pushSystemSettings")
-        #if os(iOS)
-            let autolockRow = PVSettingsSwitchRow(text: NSLocalizedString("Disable Auto Lock", comment: "Disable Auto Lock"), detailText: .subtitle("This also disables the screensaver."), key: \PVSettingsModel.disableAutoLock)
-            let appRows: [TableRow] = [autolockRow, systemsRow]
-        #else
+
+        let systemMode = self.traitCollection.userInterfaceStyle == .dark ? "Dark" : "Light"
+        var theme = PVSettingsModel.shared.theme.description
+        if PVSettingsModel.shared.theme == .auto {
+            theme += " (\(systemMode))"
+        }
+        let themeRow = NavigationRow(text: NSLocalizedString("Theme", comment: "Theme"), detailText: .value1(PVSettingsModel.shared.theme.description), action: { row in
+            let alert = UIAlertController(title: "Theme", message: "", preferredStyle: .actionSheet)
+            ThemeOptions.themes.forEach { mode in
+                let modeLabel = mode == .auto ? mode.description + " (\(systemMode))" : mode.description
+                let action = UIAlertAction(title: modeLabel, style: .default, handler: { _ in
+                    let darkTheme = (mode == .auto && self.traitCollection.userInterfaceStyle == .dark) || mode == .dark
+                    Theme.currentTheme = darkTheme ? Theme.darkTheme : Theme.lightTheme
+                    UIApplication.shared.windows.first!.overrideUserInterfaceStyle = darkTheme ? .dark : .light
+                    PVSettingsModel.shared.theme = mode
+
+                    self.generateTableViewViewModels()
+                })
+                alert.addAction(action)
+            }
+            self.present(alert, animated: true)
+        })
+        
+        #if os(tvOS)
             let appRows: [TableRow] = [systemsRow]
+        #else
+            let autolockRow = PVSettingsSwitchRow(text: NSLocalizedString("Disable Auto Lock", comment: "Disable Auto Lock"), detailText: .subtitle("This also disables the screensaver."), key: \PVSettingsModel.disableAutoLock)
+            let appRows: [TableRow] = [autolockRow, systemsRow, themeRow]
         #endif
 
         let appSection = Section(title: NSLocalizedString("App", comment: "App"), rows: appRows)
 
         // -- Core Options
         let realm = try! Realm()
-        let cores: [NavigationRow<SystemSettingsCell>] = realm.objects(PVCore.self).sorted(byKeyPath: "projectName").compactMap { pvcore in
+        let cores: [NavigationRow] = realm.objects(PVCore.self).sorted(byKeyPath: "projectName").compactMap { pvcore in
             guard let coreClass = NSClassFromString(pvcore.principleClass) as? CoreOptional.Type else {
                 VLOG("Class <\(pvcore.principleClass)> does not implement CoreOptional")
                 return nil
             }
 
-            return NavigationRow<SystemSettingsCell>(text: pvcore.projectName, detailText: .none, icon: nil, customization: nil, action: { [weak self] row in
+            return NavigationRow(text: pvcore.projectName, detailText: .none, icon: nil, customization: nil, action: { [weak self] row in
                 let coreOptionsVC = CoreOptionsViewController(withCore: coreClass)
                 coreOptionsVC.title = row.text
                 self?.navigationController?.pushViewController(coreOptionsVC, animated: true)
@@ -184,7 +202,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
         // Game Library
 
         var libraryRows: [TableRow] = [
-            NavigationRow<SystemSettingsCell>(
+            NavigationRow(
                 text: NSLocalizedString("Launch Web Server", comment: "Launch Web Server"),
                 detailText: .subtitle("Import/Export ROMs, saves, cover art…"),
                 icon: nil,
@@ -219,7 +237,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
 
         // Game Library 2
         let library2Rows: [TableRow] = [
-            NavigationRow<SystemSettingsCell>(
+            NavigationRow(
                 text: NSLocalizedString("Refresh Game Library", comment: ""),
                 detailText: .subtitle("Re-import ROMs ⚠️ Slow"),
                 icon: nil,
@@ -228,7 +246,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
                     self?.refreshGameLibraryAction()
                 }
             ),
-            NavigationRow<SystemSettingsCell>(
+            NavigationRow(
                 text: NSLocalizedString("Empty Image Cache", comment: "Empty Image Cache"),
                 detailText: .subtitle("Re-download covers"),
                 icon: nil,
@@ -237,7 +255,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
                     self?.emptyImageCacheAction()
                 }
             ),
-            NavigationRow<SystemSettingsCell>(
+            NavigationRow(
                 text: NSLocalizedString("Manage Conflicts", comment: ""),
                 detailText: .subtitle(numberOfConflicts > 0 ? "Manually resolve conflicted imports: \(numberOfConflicts) detected" : "None detected"),
                 icon: nil,
@@ -279,7 +297,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
                                 key: \PVSettingsModel.debugOptions.unsupportedCores),
 
             PVSettingsSwitchRow(text: NSLocalizedString("Use Swift UI", comment: "Use Swift UI"),
-                                detailText: .subtitle("Swift UI placeholder. Don't use unless you're a developer."),
+                                detailText: .subtitle("Alternative UI in Swift UI. Not all features supported yet."),
                                 key: \PVSettingsModel.debugOptions.useSwiftUI) { cell, row in
 //                                    let swiftUIDetailText: DetailText
 //                                    if #available(iOS 14, tvOS 14, *) {
@@ -305,6 +323,9 @@ final class PVSettingsViewController: PVQuickTableViewController {
             PVSettingsSwitchRow(text: NSLocalizedString("On screen Joypad", comment: ""),
                                 detailText: .subtitle("Show a touch Joystick pad on supported systems. Layout is strange on some devices while in beta."),
                                 key: \PVSettingsModel.debugOptions.onscreenJoypad),
+            PVSettingsSwitchRow(text: NSLocalizedString("On screen Joypad with keyboard", comment: ""),
+                                detailText: .subtitle("Show a touch Joystick pad on supported systems when the P1 controller is 'Keyboard'. Useful on iPad OS for systems with an analog joystick (N64, PSX, etc.)"),
+                                key: \PVSettingsModel.debugOptions.onscreenJoypadWithKeyboard),
         ]
         #else // tvOS
          let betaRows: [TableRow] = [
@@ -388,23 +409,23 @@ final class PVSettingsViewController: PVQuickTableViewController {
         let buildDateString: String = outputDateFormatter.string(from: buildDate)
 
         let buildInformationRows: [TableRow] = [
-            NavigationRow<SystemSettingsCell>(
+            NavigationRow(
                 text: NSLocalizedString("Version", comment: ""),
                 detailText: .value2(versionText ?? NSLocalizedString("Unknown", comment: "")),
                 icon: nil,
                 customization: { cell, _ in
                     if !masterBranch {
-                        cell.detailTextLabel?.textColor = UIColor(hex: "#F5F5A0")
+                        cell.detailTextLabel?.textColor = .systemYellow
                     }
                 },
                 action: nil
             ),
-            NavigationRow<SystemSettingsCell>(text: NSLocalizedString("Build", comment: "Build"), detailText: .value2(bundleVersion)),
-            NavigationRow<SystemSettingsCell>(text: NSLocalizedString("Mode", comment: "Mode"), detailText: .value2(modeLabel)),
-            NavigationRow<SystemSettingsCell>(text: NSLocalizedString("Git Revision", comment: "Git Revision"), detailText: .value2(revisionString)),
-            NavigationRow<SystemSettingsCell>(text: NSLocalizedString("Build Date", comment: "Build Date"), detailText: .value2(buildDateString)),
-            NavigationRow<SystemSettingsCell>(text: NSLocalizedString("Builder", comment: "Builder"), detailText: .value2(builtByUser)),
-            NavigationRow<SystemSettingsCell>(text: NSLocalizedString("Bundle ID", comment: "Bundle ID"), detailText: .value2(Bundle.main.bundleIdentifier ?? "Unknown"))
+            NavigationRow(text: NSLocalizedString("Build", comment: "Build"), detailText: .value2(bundleVersion)),
+            NavigationRow(text: NSLocalizedString("Mode", comment: "Mode"), detailText: .value2(modeLabel)),
+            NavigationRow(text: NSLocalizedString("Git Revision", comment: "Git Revision"), detailText: .value2(revisionString)),
+            NavigationRow(text: NSLocalizedString("Build Date", comment: "Build Date"), detailText: .value2(buildDateString)),
+            NavigationRow(text: NSLocalizedString("Builder", comment: "Builder"), detailText: .value2(builtByUser)),
+            NavigationRow(text: NSLocalizedString("Bundle ID", comment: "Bundle ID"), detailText: .value2(Bundle.main.bundleIdentifier ?? "Unknown"))
         ]
 
         let buildSection = Section(title: NSLocalizedString("Build Information", comment: ""), rows: buildInformationRows)
@@ -419,7 +440,7 @@ final class PVSettingsViewController: PVQuickTableViewController {
 
         // Debug section
         let debugRows: [TableRow] = [
-            NavigationRow<SystemSettingsCell>(text: NSLocalizedString("Logs", comment: "Logs"),
+            NavigationRow(text: NSLocalizedString("Logs", comment: "Logs"),
                                               detailText: .subtitle("Live logging information"),
                                               icon: nil,
                                               customization: nil,

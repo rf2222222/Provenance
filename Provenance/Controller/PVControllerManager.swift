@@ -83,6 +83,14 @@ final class PVControllerManager: NSObject {
     var hasControllers: Bool {
         return player1 != nil || player2 != nil || player3 != nil || player4 != nil
     }
+    var isKeyboardConnected: Bool {
+        return keyboardController != nil
+//        if #available(iOS 14.0, *) {
+//            return GCKeyboard.coalesced != nil
+//        } else {
+//            return false
+//        }
+    }
 
     static let shared: PVControllerManager = PVControllerManager()
 
@@ -210,7 +218,7 @@ final class PVControllerManager: NSObject {
             return
         }
 
-#if !targetEnvironment(macCatalyst) && canImport(SteamController)
+#if !targetEnvironment(macCatalyst) && canImport(SteamController)  && !os(macOS)
         if let steamController = controller as? SteamController {
             #if os(tvOS)
             // PVEmulatorViewController will set to controller mode if game is running
@@ -270,12 +278,12 @@ final class PVControllerManager: NSObject {
 
     @available(iOS 14.0, tvOS 14.0, *)
     @objc func handleKeyboardConnect(_ note: Notification?) {
-        #if !targetEnvironment(simulator)
+//        #if !targetEnvironment(simulator)
         if let controller = GCKeyboard.coalesced?.createController() {
             keyboardController = controller
             NotificationCenter.default.post(name:.GCControllerDidConnect, object: controller)
         }
-        #endif
+//        #endif
     }
 
     @available(iOS 14.0, tvOS 14.0, *)
@@ -298,7 +306,7 @@ final class PVControllerManager: NSObject {
         listenForICadeControllers(window: nil) { () -> Void in }
     }
 
-#if !targetEnvironment(macCatalyst) && canImport(SteamController)
+#if !targetEnvironment(macCatalyst) && canImport(SteamController) && !os(macOS)
     func handleSteamControllerCombination(controller: SteamController, button: SteamControllerButton) {
         switch button {
         case .leftTrackpadClick:
@@ -418,7 +426,7 @@ final class PVControllerManager: NSObject {
         return false
     }
 
-#if !targetEnvironment(macCatalyst) && canImport(SteamController)
+#if !targetEnvironment(macCatalyst) && canImport(SteamController) && !os(macOS)
     func setSteamControllersMode(_ mode: SteamControllerMode) {
         for controller in SteamControllerManager.shared().controllers {
             controller.steamControllerMode = mode

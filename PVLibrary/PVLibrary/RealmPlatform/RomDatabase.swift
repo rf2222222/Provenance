@@ -9,9 +9,11 @@
 import Foundation
 import PVSupport
 import RealmSwift
+#if canImport(UIKit)
 import UIKit
+#endif
 
-let schemaVersion: UInt64 = 10
+let schemaVersion: UInt64 = 11
 
 public extension Notification.Name {
     static let DatabaseMigrationStarted = Notification.Name("DatabaseMigrarionStarted")
@@ -130,6 +132,11 @@ public final class RealmConfiguration {
             if oldSchemaVersion < 10 {
                 migration.enumerateObjects(ofType: PVCore.className()) { oldObject, newObject in
                     newObject!["disabled"] = false
+                }
+            }
+            if oldSchemaVersion < 11 {
+                migration.enumerateObjects(ofType: PVSystem.className()) { oldObject, newObject in
+                    newObject!["supported"] = true
                 }
             }
         }
@@ -373,6 +380,15 @@ public extension RomDatabase {
             try realm.write {
                 block()
             }
+        }
+    }
+    
+    @objc
+    func asyncWriteTransaction(_ block: @escaping () -> Void) {
+        if realm.isPerformingAsynchronousWriteOperations {
+            block()
+        } else {
+            realm.writeAsync(block)
         }
     }
 

@@ -30,7 +30,7 @@
 #import <PVSupport/OERingBuffer.h>
 #import <PVSupport/DebugUtils.h>
 
-#if !TARGET_OS_MACCATALYST
+#if !TARGET_OS_MACCATALYST && !TARGET_OS_OSX
 #import <OpenGLES/gltypes.h>
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
@@ -626,7 +626,7 @@ static void writeSaveFile(const char* path, int type) {
 @implementation PVStellaGameCore (GameWithCheat)
 
 -(BOOL)supportsCheatCode {
-    return YES;
+    return NO;
 }
 
 - (BOOL)setCheat:(NSString *)code setType:(NSString *)type setEnabled:(BOOL)enabled  error:(NSError**)error {
@@ -640,7 +640,7 @@ static void writeSaveFile(const char* path, int type) {
         [self.cheats insertObject:code atIndex:index];
         
         const char* _Nullable code_c = [code cStringUsingEncoding:NSUTF8StringEncoding];
-        cheatListSuccessfull = retro_cheat_set(index, enabled, code_c);
+        retro_cheat_set(index, enabled, code_c);
 
         ILOG(@"Applied Cheat Code %@ %@ %@", code, type, cheatListSuccessfull ? @"Success" : @"Failed");
 

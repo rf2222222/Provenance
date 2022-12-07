@@ -13,6 +13,12 @@ import Foundation
 @_exported import RealmSwift
 @_exported import SQLite
 
+#if canImport(UIKit)
+import UIKit
+#else
+import AppKit
+#endif
+
 struct Constants {
     struct iCloud {
 //        static let containerIdentifier = "iCloud.org.provenance-emu.provenance"
@@ -606,23 +612,38 @@ public extension GameImporter {
         }
 
         // Create a UIImage from the Data
+        #if canImport(UIKit)
         guard let coverArtFullImage = UIImage(data: coverArtFullData) else {
             ELOG("Failed to create Image from data")
             return nil
         }
-
         // Scale the UIImage to our desired max size
         guard let coverArtScaledImage = coverArtFullImage.scaledImage(withMaxResolution: Int(PVThumbnailMaxResolution)) else {
             ELOG("Failed to create scale image")
             return nil
         }
+        #else
+        guard let coverArtFullImage = NSImage(data: coverArtFullData) else {
+            ELOG("Failed to create Image from data")
+            return nil
+        }
+        // Scale the UIImage to our desired max size
+        let coverArtScaledImage = coverArtFullImage
+//        guard let coverArtScaledImage = coverArtFullImage.scaledImage(withMaxResolution: Int(PVThumbnailMaxResolution)) else {
+//            ELOG("Failed to create scale image")
+//            return nil
+//        }
+        #endif
 
+#if canImport(UIKit)
         // Create new Data from scaled image
         guard let coverArtScaledData = coverArtScaledImage.jpegData(compressionQuality: 0.85) else {
             ELOG("Failed to create data respresentation of scaled image")
             return nil
         }
-
+        #else
+        let coverArtScaledData = coverArtScaledImage.jpegData(compressionQuality: 0.85) 
+        #endif
         // Hash the image and save to cache
         let hash: String = (coverArtScaledData as NSData).md5Hash
 
@@ -855,8 +876,12 @@ public extension GameImporter {
             let romFullPath = PVEmulatorConfiguration.documentsPath.appendingPathComponent(game.romPath).path
 
             if let md5Hash = FileManager.default.md5ForFile(atPath: romFullPath, fromOffset: offset) {
-                try? database.writeTransaction {
-                    game.md5Hash = md5Hash
+                do {
+                    try database.writeTransaction {
+                        game.md5Hash = md5Hash
+                    }
+                } catch {
+                    ELOG("`database.writeTransaction` failed. \(error.localizedDescription)")
                 }
             }
         }
@@ -1056,7 +1081,74 @@ public extension GameImporter {
 
         return try searchDatabase(usingKey: key, value: value, systemID: systemIDInt)
     }
+    
+    // TODO: This was a quick copy of the general version for filenames specifically
+    func searchDatabase(usingFilename filename: String, systemID: String) throws -> [[String: NSObject]]? {
+        guard let systemIDInt = PVEmulatorConfiguration.databaseID(forSystemID: systemID) else {
+            throw DatabaseQueryError.invalidSystemID
+        }
 
+        return try searchDatabase(usingFilename: filename, systemID: systemIDInt)
+    }
+    func searchDatabase(usingFilename filename: String, systemIDs: [String]) throws -> [[String: NSObject]]? {
+        let systemIDsInts: [Int] = systemIDs.compactMap { PVEmulatorConfiguration.databaseID(forSystemID: $0) }
+        guard !systemIDsInts.isEmpty else {
+            throw DatabaseQueryError.invalidSystemID
+        }
+
+        return try searchDatabase(usingFilename: filename, systemIDs: systemIDsInts)
+    }
+    func searchDatabase(usingFilename filename: String, systemIDs: [Int]) throws -> [[String: NSObject]]? {
+        let properties = "releaseTitleName as 'gameTitle', releaseCoverFront as 'boxImageURL', TEMPRomRegion as 'region', releaseDescription as 'gameDescription', releaseCoverBack as 'boxBackURL', releaseDeveloper as 'developer', releasePublisher as 'publisher', romSerial as 'serial', releaseDate as 'releaseDate', releaseGenre as 'genres', releaseReferenceURL as 'referenceURL', releaseID as 'releaseID', romLanguage as 'language', regionLocalizedID as 'regionID'"
+
+        let likeQuery = "SELECT DISTINCT romFileName, " + properties + ", systemShortName FROM ROMs rom LEFT JOIN RELEASES release USING (romID) LEFT JOIN SYSTEMS system USING (systemID) LEFT JOIN REGIONS region on (regionLocalizedID=region.regionID) WHERE 'releaseTitleName' LIKE \"%%%@%%\" AND systemID IN (%@) ORDER BY case when 'releaseTitleName' LIKE \"%@%%\" then 1 else 0 end DESC"
+        let dbSystemID: String = systemIDs.compactMap { "\($0)" }.joined(separator: ",")
+        let queryString = String(format: likeQuery, filename, dbSystemID, filename)
+      
+        let results: [Any]?
+
+        do {
+            results = try openVGDB.executeQuery(queryString)
+        } catch {
+            ELOG("Failed to execute query: \(error.localizedDescription)")
+            throw error
+        }
+
+        if let validResult = results as? [[String: NSObject]], !validResult.isEmpty {
+            return validResult
+        } else {
+            return nil
+        }
+    }
+    func searchDatabase(usingFilename filename: String, systemID: Int? = nil) throws -> [[String: NSObject]]? {
+        let properties = "releaseTitleName as 'gameTitle', releaseCoverFront as 'boxImageURL', TEMPRomRegion as 'region', releaseDescription as 'gameDescription', releaseCoverBack as 'boxBackURL', releaseDeveloper as 'developer', releasePublisher as 'publisher', romSerial as 'serial', releaseDate as 'releaseDate', releaseGenre as 'genres', releaseReferenceURL as 'referenceURL', releaseID as 'releaseID', romLanguage as 'language', regionLocalizedID as 'regionID'"
+
+        let queryString: String
+        if let systemID = systemID {
+            let likeQuery = "SELECT DISTINCT romFileName, " + properties + ", systemShortName FROM ROMs rom LEFT JOIN RELEASES release USING (romID) LEFT JOIN SYSTEMS system USING (systemID) LEFT JOIN REGIONS region on (regionLocalizedID=region.regionID) WHERE 'releaseTitleName' LIKE \"%%%@%%\" AND systemID=\"%@\" ORDER BY case when 'releaseTitleName' LIKE \"%@%%\" then 1 else 0 end DESC"
+            let dbSystemID: String = String(systemID)
+            queryString = String(format: likeQuery, filename, dbSystemID, filename)
+        } else {
+            let likeQuery = "SELECT DISTINCT romFileName, " + properties + ", systemShortName FROM ROMs rom LEFT JOIN RELEASES release USING (romID) LEFT JOIN SYSTEMS system USING (systemID) LEFT JOIN REGIONS region on (regionLocalizedID=region.regionID) WHERE 'releaseTitleName' LIKE \"%%%@%%\" ORDER BY case when 'releaseTitleName' LIKE \"%@%%\" then 1 else 0 end DESC"
+            queryString = String(format: likeQuery, filename, filename)
+        }
+      
+        let results: [Any]?
+
+        do {
+            results = try openVGDB.executeQuery(queryString)
+        } catch {
+            ELOG("Failed to execute query: \(error.localizedDescription)")
+            throw error
+        }
+
+        if let validResult = results as? [[String: NSObject]], !validResult.isEmpty {
+            return validResult
+        } else {
+            return nil
+        }
+    }
+    
     func searchDatabase(usingKey key: String, value: String, systemID: Int? = nil) throws -> [[String: NSObject]]? {
         var results: [Any]?
 
@@ -1213,7 +1305,7 @@ extension GameImporter {
 
         do {
             try database.add(game, update: true)
-            //			RomDatabase.sharedInstance.library.games.append(game) // Fuck this why is it crashing
+            // RomDatabase.sharedInstance.library.games.append(game) // Fuck this why is it crashing
         } catch {
             ELOG("Couldn't add new game \(title): \(error.localizedDescription)")
             return nil
@@ -1270,14 +1362,17 @@ extension GameImporter {
         DLOG("Starting Artwork download for \(url)")
 
 		#warning("Evil hack for bad domain in DB")
-		url = url.replacingOccurrences(of: "gamefaqs1.cbsistatic.com/box/", with:
-	"gamefaqs.gamespot.com/a/box/")
+		url = url.replacingOccurrences(of: "gamefaqs1.cbsistatic.com/box/", with: "gamefaqs.gamespot.com/a/box/")
 
         guard let artworkURL = URL(string: url) else {
+            ELOG("url is invalid url <\(url)>")
             return
         }
 
         let request = URLRequest(url: artworkURL)
+
+        // Create thread-safe reference to person
+        @ThreadSafe var gameRef = game
 
         // TODO: Is a synchronous data task just a bad idea here?
 //        let dataMaybe: Data?
@@ -1287,15 +1382,18 @@ extension GameImporter {
 //            DLOG("error downloading artwork from: \(url) -- \(error.localizedDescription)")
 //            return
 //        }
-        URLSession.shared.dataTask(with: request) { dataMaybe, urlResponseMaybe, error in
-            var artworkURL: String? = nil
-            defer {
+        let task = URLSession.shared.dataTask(with: request) { dataMaybe, urlResponseMaybe, error in
+            func artworkCompletion(artworkURL: String) {
                 if self.finishedArtworkHandler != nil {
                     DispatchQueue.main.sync(execute: { () -> Void in
-                        self.finishedArtworkHandler?(artworkURL)
+                        ILOG("Calling finishedArtworkHandler \(artworkURL)")
+                        self.finishedArtworkHandler!(artworkURL)
                     })
+                } else {
+                    ELOG("finishedArtworkHandler == nil")
                 }
             }
+            
             if let error = error {
                 ELOG("Network error: \(error.localizedDescription)")
                 return
@@ -1310,17 +1408,30 @@ extension GameImporter {
                 DLOG("HTTP Error: \(urlResponse.statusCode). \nResponse: \(urlResponse)")
             }
 
+            #if os(macOS)
+            if let artwork = NSImage(data: data) {
+                do {
+                    let localURL = try PVMediaCache.writeImage(toDisk: artwork, withKey: url)
+                    try RomDatabase.sharedInstance.writeTransaction {
+                        let file = PVImageFile(withURL: localURL, relativeRoot: .iCloud)
+                        gameRef?.originalArtworkFile = file
+                    }
+                } catch { ELOG("\(error.localizedDescription)") }
+            }
+            #else
             if let artwork = UIImage(data: data) {
                 do {
                     let localURL = try PVMediaCache.writeImage(toDisk: artwork, withKey: url)
                     try RomDatabase.sharedInstance.writeTransaction {
                         let file = PVImageFile(withURL: localURL, relativeRoot: .iCloud)
-                        game.originalArtworkFile = file
+                        gameRef?.originalArtworkFile = file
                     }
                 } catch { ELOG("\(error.localizedDescription)") }
             }
-            artworkURL = url
+            #endif
+            artworkCompletion(artworkURL: url)
         }
+        task.resume()
     }
 
     public func moveROM(toAppropriateSubfolder candidateFile: ImportCandidateFile) -> URL? {
@@ -1334,11 +1445,13 @@ extension GameImporter {
 
         // Check if zip
         if PVEmulatorConfiguration.archiveExtensions.contains(extensionLowercased) {
+            ILOG("Candidate file is an archive, returning from moveRom()")
             return nil
         }
 
         // Check first if known BIOS
         if let biosEntry = biosEntryMatcing(candidateFile: candidateFile) {
+            ILOG("Candiate file matches as a known BIOS")
             // We have a BIOS file match
             let destinationPath = biosEntry.expectedPath
             let biosDirectory = biosEntry.system.biosDirectory
@@ -1428,13 +1541,14 @@ extension GameImporter {
             let system = RomDatabase.sharedInstance.all(PVSystem.self, where: "openvgDatabaseID", value: sid).first,
             let subfolderPath = self.path(forSystemID: system.identifier),
             let subPath = _moveRomFoundSubpath(subfolderPath: subfolderPath, filePath: filePath) {
+            ILOG("MD5 matched, moved to subPath <\(subPath.path)>")
             return subPath
         }
 
         // Done dealing with BIOS file matches
         guard let systemsForExtension = systemIDsForRom(at: filePath), !systemsForExtension.isEmpty else {
+            ELOG("No system found to match \(filePath.lastPathComponent). Will call `deleteIfJunk()`")
             deleteIfJunk(filePath)
-            ELOG("No system found to match \(filePath.lastPathComponent)")
             return nil
         }
 
@@ -1444,13 +1558,43 @@ extension GameImporter {
 
             // Any results of MD5 match?
             var results: [[String: NSObject]]?
+            // TODO: Would be better performance to search EVERY system MD5 in a single query? Need to rewrite searchDatabase for an array of systemIDs
+            
+            // Wait, why are we even looking at MD5, shouldn't it be filename? testing that @JoeMatt 11/27/22
+            
+            // New code, 11/22, check by filename being close to release name first
+            let filename = candidateFile.filePath.deletingPathExtension().lastPathComponent
+            DLOG("Will search for filename \(filename) in possible systems by extension.")
+            
+            // TODO: test if search by name works
+            #if false
+            // TODO: test if search by system array works
+            results =  try? self.searchDatabase(usingFilename: filename, systemIDs: [systemsForExtension])
+            #else
             for currentSystem: String in systemsForExtension {
-                // TODO: Would be better performance to search EVERY system MD5 in a single query?
-                if let gotit = try? self.searchDatabase(usingKey: "romHashMD5", value: fileMD5, systemID: currentSystem) {
+                if let gotit = try? self.searchDatabase(usingFilename: filename, systemID: currentSystem){
                     foundSystemIDMaybe = currentSystem
                     results = gotit
+                    DLOG("Got it by filename: \(gotit.debugDescription)")
                     break
                 }
+            }
+            #endif
+
+            if results == nil {
+                #if false
+                // TODO: test if search by array works
+                results =  try? self.searchDatabase(usingKey: "romHashMD5", value: fileMD5, systemIDs: [systemsForExtension])
+                #else
+                for currentSystem: String in systemsForExtension {
+                    if let gotit = try? self.searchDatabase(usingKey: "romHashMD5", value: fileMD5, systemID: currentSystem) {
+                        foundSystemIDMaybe = currentSystem
+                        results = gotit
+                        DLOG("Got it: \(gotit.debugDescription)")
+                        break
+                    }
+                }
+                #endif
             }
 
             if let results = results, !results.isEmpty {
@@ -1486,10 +1630,17 @@ extension GameImporter {
         }
 
         guard let subfolderPath = subfolderPathMaybe, !subfolderPath.path.isEmpty else {
+            ELOG("`subfolderPath` is nil or empty. \(subfolderPathMaybe?.path ?? "nil")")
             return nil
         }
 
-        return _moveRomFoundSubpath(subfolderPath: subfolderPath, filePath: filePath)
+        let currentSubPath = filePath.deletingLastPathComponent()
+        if currentSubPath == subfolderPath {
+            ILOG("File already is at destination, skipping move. Perhaps this was just missing from DB.")
+            return nil
+        } else {
+            return _moveRomFoundSubpath(subfolderPath: subfolderPath, filePath: filePath)
+        }
     }
 
     public func _moveRomFoundSubpath(subfolderPath: URL, filePath: URL) -> URL? {
@@ -1498,19 +1649,22 @@ extension GameImporter {
 
         // Try to create the directory where this ROM  goes,
         // withIntermediateDirectories == true means it won't error if exists
-        do {
-            try fm.createDirectory(at: subfolderPath, withIntermediateDirectories: true, attributes: nil)
-        } catch {
-            DLOG("Unable to create \(subfolderPath.path) - \(error.localizedDescription)")
-            return nil
+        if !fm.fileExists(atPath: subfolderPath.path) {
+            ILOG("Directory doesn't exist, will attempt to create <\(subfolderPath.path)>")
+            do {
+                try fm.createDirectory(at: subfolderPath, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                DLOG("Unable to create \(subfolderPath.path) - \(error.localizedDescription)")
+                return nil
+            }
         }
 
         let destination = subfolderPath.appendingPathComponent(filePath.lastPathComponent)
-
+        DLOG("'destination' == <\(destination.path)>")
         // Try to move the file to it's home
         do {
 			guard fm.fileExists(atPath: filePath.path) else {
-				ELOG("No file exists at <\(filePath)>")
+				ELOG("No file exists at source path: <\(filePath)>")
 				return nil
 			}
 			if fm.fileExists(atPath: destination.path) {

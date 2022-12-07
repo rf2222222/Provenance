@@ -228,8 +228,12 @@ extension MirroredSettings {
 
     @objc public class DebugOptions: NSObject {
 		@objc public dynamic var useMetal = false
+        #if os(macOS)
+        @objc public dynamic var useSwiftUI = true
+        #else
         @objc public dynamic var useSwiftUI = false
-		@objc public dynamic var experimentalCores = false
+        #endif
+//		@objc public dynamic var experimentalCores = false
         @objc public dynamic var iCloudSync = false
         @objc public dynamic var unsupportedCores = false
 //        @objc public dynamic var multiThreadedGL = BoolSetting(false, title: "Multi-threaded GL", info: "Use threaded GLES calls.")
@@ -238,8 +242,11 @@ extension MirroredSettings {
         #if os(tvOS)
         @objc public dynamic var tvOSThemes = false
         #endif
+        #if os(iOS)
         @objc public dynamic var movableButtons = false
         @objc public dynamic var onscreenJoypad = true
+        @objc public dynamic var onscreenJoypadWithKeyboard = true
+        #endif
     }
 
     public dynamic var debugOptions = DebugOptions()
@@ -277,13 +284,15 @@ extension MirroredSettings {
 
     public dynamic var showGameTitles = true
     public dynamic var gameLibraryScale = 1.0
-#if os(tvOS) || targetEnvironment(simulator)
+#if os(tvOS)
     public dynamic var webDavAlwaysOn = true
 #else
     public dynamic var webDavAlwaysOn = false
 #endif
+#if canImport(UIKit)
     public dynamic var myiCadeControllerSetting = iCadeControllerSetting.disabled
-
+    public dynamic var allRightShoulders = false
+#endif
     public dynamic var controllerOpacity: Double = 0.8
     public dynamic var buttonTints = true
     public dynamic var use8BitdoM30 = false
@@ -294,8 +303,6 @@ extension MirroredSettings {
         public dynamic var missingButtonsAlwaysOn = false
     #endif
 
-    public dynamic var allRightShoulders = false
-
     public dynamic var volume: Float = 1.0
     public dynamic var volumeHUD = true
 
@@ -303,4 +310,10 @@ extension MirroredSettings {
 
     public dynamic var haveWarnedAboutDebug = false
     public dynamic var collapsedSystems = Set<String>()
+
+#if os(tvOS)
+    public dynamic var largeGameArt = true
+#endif
+
+    public dynamic var theme: ThemeOptions = .dark
 }

@@ -66,8 +66,6 @@ extension PVRootViewController: PVRootDelegate {
 extension PVRootViewController {
     func delete(game: PVGame) throws {
         try RomDatabase.sharedInstance.delete(game: game)
-//        loadLastKnownNavOption()
-        // we're still retaining a refernce to the removed game, causing a realm crash. Need to reload the view
     }
 }
 
@@ -114,7 +112,7 @@ extension PVRootViewController: PVMenuDelegate {
         actionSheet.addAction(UIAlertAction(title: "Cloud & Local Files", style: .default, handler: { _ in
             let extensions = [UTI.rom, UTI.artwork, UTI.savestate, UTI.zipArchive, UTI.sevenZipArchive, UTI.gnuZipArchive, UTI.image, UTI.jpeg, UTI.png, UTI.bios, UTI.data, UTI.rar].map { $0.rawValue }
 
-            let documentPicker = PVDocumentPickerViewController(documentTypes: extensions, in: .import)
+            let documentPicker = UIDocumentPickerViewController(documentTypes: extensions, in: .import)
             documentPicker.allowsMultipleSelection = true
             documentPicker.delegate = self
             self.present(documentPicker, animated: true, completion: nil)
@@ -143,6 +141,7 @@ extension PVRootViewController: PVMenuDelegate {
         for console in consoles {
             self.consoleIdentifiersAndNamesMap[console.identifier] = console.name
         }
+        selectedTabCancellable?.cancel()
         selectedTabCancellable = consolesWrapperViewDelegate.$selectedTab.sink { [weak self] tab in
             guard let self = self else { return }
             if let cachedTitle = self.consoleIdentifiersAndNamesMap[tab] {

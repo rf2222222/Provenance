@@ -29,11 +29,8 @@ final class PVAppDelegate: UIResponder, UIApplicationDelegate {
 
     func _initUITheme() {
         #if os(iOS)
-        //        let currentTheme = PVSettingsModel.shared.theme
-        //        Theme.currentTheme = currentTheme.theme
-        DispatchQueue.main.async {
-            Theme.currentTheme = Theme.darkTheme
-        }
+        let darkTheme = (PVSettingsModel.shared.theme == .auto && self.window?.traitCollection.userInterfaceStyle == .dark) || PVSettingsModel.shared.theme == .dark
+        Theme.currentTheme = darkTheme ? Theme.darkTheme : Theme.lightTheme
         #elseif os(tvOS)
         if PVSettingsModel.shared.debugOptions.tvOSThemes {
             DispatchQueue.main.async {
@@ -56,6 +53,9 @@ final class PVAppDelegate: UIResponder, UIApplicationDelegate {
 
         #if os(tvOS)
         window.tintColor = .provenanceBlue
+        #else
+        let darkTheme = (PVSettingsModel.shared.theme == .auto && window.traitCollection.userInterfaceStyle == .dark) || PVSettingsModel.shared.theme == .dark
+        window.overrideUserInterfaceStyle = darkTheme ? .dark : .light
         #endif
 
         if #available(iOS 14, tvOS 14, *),
@@ -69,7 +69,7 @@ final class PVAppDelegate: UIResponder, UIApplicationDelegate {
             let sideNav = SideNavigationController(mainViewController: UINavigationController(rootViewController: rootViewController))
             sideNav.leftSide(
                 viewController: SideMenuView.instantiate(gameLibrary: gameLibrary, viewModel: viewModel, delegate: rootViewController, rootDelegate: rootViewController),
-                options: .init(widthPercent: 0.8, animationDuration: 0.18, overlayColor: .clear, overlayOpacity: 1, shadowOpacity: 0.0)
+                options: .init(widthPercent: 0.7, animationDuration: 0.18, overlayColor: .clear, overlayOpacity: 1, shadowOpacity: 0.0)
             )
 
             window.rootViewController = sideNav
@@ -99,7 +99,7 @@ final class PVAppDelegate: UIResponder, UIApplicationDelegate {
         _initAppCenter()
         setDefaultsFromSettingsBundle()
 
-		#if !targetEnvironment(macCatalyst)
+		#if !targetEnvironment(macCatalyst) && !os(macOS)
         PVEmulatorConfiguration.initICloud()
         DispatchQueue.global(qos: .background).async {
             let useiCloud = PVSettingsModel.shared.debugOptions.iCloudSync && PVEmulatorConfiguration.supportsICloud
@@ -176,7 +176,7 @@ final class PVAppDelegate: UIResponder, UIApplicationDelegate {
         // SteamControllerManager.listenForConnections()
         #endif
 
-        #if os(iOS)
+        #if os(iOS) && !targetEnvironment(macCatalyst)
             PVAltKitService.shared.start()
             ApplicationMonitor.shared.start()
         #endif
