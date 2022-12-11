@@ -11,12 +11,6 @@
 		<string>appclips:provenance.app</string>
 		<string>appclips:provenance-emu.com</string>
 	</array>
-	<key>com.apple.developer.driverkit.communicates-with-drivers</key>
-	<true/>
-	<key>com.apple.developer.game-center</key>
-	<true/>
-	<key>com.apple.developer.group-session</key>
-	<true/>
 	<key>com.apple.developer.icloud-container-identifiers</key>
 	<array>
 		<string>iCloud.org.provenance-emu.provenance</string>
