@@ -4422,13 +4422,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				OTHER_CFLAGS = (
-					"-fobjc-arc",
-					"-fcxx-modules",
-					"-x",
-					"objective-c++",
-					"-fmodules",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.provenance-emu.pvplay";
 				PRODUCT_NAME = PVPlay;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4642,13 +4635,6 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				OTHER_CFLAGS = (
-					"-fobjc-arc",
-					"-fcxx-modules",
-					"-x",
-					"objective-c++",
-					"-fmodules",
-				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.provenance-emu.pvplay";
 				PRODUCT_NAME = PVPlay;
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -4693,13 +4679,6 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
-				);
-				OTHER_CFLAGS = (
-					"-fobjc-arc",
-					"-fcxx-modules",
-					"-x",
-					"objective-c++",
-					"-fmodules",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.provenance-emu.pvplay";
 				PRODUCT_NAME = PVPlay;
