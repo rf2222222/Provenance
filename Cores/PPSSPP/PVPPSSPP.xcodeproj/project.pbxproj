@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		93928447295DFFA900F2AD12 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93928433295DFFA900F2AD12 /* CoreMedia.framework */; };
 		939B19432948B05F0024133A /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 939B19422948B05F0024133A /* libsqlite3.tbd */; };
 		93E74163295B344F0028EB94 /* libarmips.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E740EE295B2FD20028EB94 /* libarmips.a */; platformFilters = (ios, maccatalyst, ); };
 		93E74164295B344F0028EB94 /* libcityhash.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E740F0295B2FD20028EB94 /* libcityhash.a */; platformFilters = (ios, maccatalyst, ); };
@@ -367,203 +368,203 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = ECC5BCCC904342A49FD0B089;
+			remoteGlobalIDString = A86B65A07B824A9B9B9DA7C0;
 			remoteInfo = Common;
 		};
 		93E7412B295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 18CBB3236238456E8B9D0956;
+			remoteGlobalIDString = D5875E40C40743E3B8FCE811;
 			remoteInfo = Core;
 		};
 		93E7412D295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 2FDE17D19DDC4497B3682CCB;
+			remoteGlobalIDString = FDA961DB0C1C427295EDC8E8;
 			remoteInfo = GenericCodeGen;
 		};
 		93E7412F295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 6E9C1D40A218440A872225E4;
+			remoteGlobalIDString = 4FF1E811F90C46E5AD40AAD6;
 			remoteInfo = HLSL;
 		};
 		93E74131295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D9D634B8A407451F9A1243A5;
+			remoteGlobalIDString = 46F53E64C31545D180422507;
 			remoteInfo = MachineIndependent;
 		};
 		93E74133295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = A541943DC8BC469B9B244A45;
+			remoteGlobalIDString = 7165190331BE4D929166DF28;
 			remoteInfo = OGLCompiler;
 		};
 		93E74135295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 8FF46E7FE8CB4B3F95562ADF;
+			remoteGlobalIDString = CDA88DB0CCE946DB932649EC;
 			remoteInfo = OSDependent;
 		};
 		93E74137295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = DC53C890CC00483B9C987E30;
+			remoteGlobalIDString = 3E0BECD6F99C4853995F9819;
 			remoteInfo = SPIRV;
 		};
 		93E74139295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 76F559DF3FA74B2BA80A5346;
+			remoteGlobalIDString = 58BD841E90D942469EE6FAD5;
 			remoteInfo = armips;
 		};
 		93E7413B295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 82E34134E50A4E3C88B44F30;
+			remoteGlobalIDString = 396C50143FC84231B8A722B7;
 			remoteInfo = cityhash;
 		};
 		93E7413D295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = B52C23BD0C2C4EB89A7285C8;
+			remoteGlobalIDString = 77E758AA3DCC418EB6132EC7;
 			remoteInfo = gason;
 		};
 		93E7413F295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = A18907327E334696BCF8D544;
+			remoteGlobalIDString = 9B81FB75E37F4F6EAFE28A2D;
 			remoteInfo = glslang;
 		};
 		93E74141295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 240BFE9AF7664D178ED161A9;
+			remoteGlobalIDString = A0226852D20F4474A60C8919;
 			remoteInfo = kirk;
 		};
 		93E74143295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 70F94C24B37644B09DAB697F;
+			remoteGlobalIDString = BF1C1280719F40FEA49FBC88;
 			remoteInfo = libzip;
 		};
 		93E74145295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 78E09D2D978D43FC9F9D2150;
+			remoteGlobalIDString = F30AE28EE4604BF48BA4CDF1;
 			remoteInfo = libzstd_static;
 		};
 		93E74147295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 56CF969B0D19421ABEDEBA6F;
+			remoteGlobalIDString = 13346B7A174446EBBFEB3169;
 			remoteInfo = miniupnpc;
 		};
 		93E74149295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 9B7DDDD791B9450DAE4E2803;
+			remoteGlobalIDString = 1B816C82C1EB402F8B2D1FE2;
 			remoteInfo = native;
 		};
 		93E7414B295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = A0137B27D1354A59B0C31301;
+			remoteGlobalIDString = 1FA6D780E86A49CDBA9878BE;
 			remoteInfo = png17;
 		};
 		93E7414D295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C81594BDF44B49E0BF4BE7B8;
+			remoteGlobalIDString = 93B48635CD824FF3B2D1AFB5;
 			remoteInfo = sfmt19937;
 		};
 		93E7414F295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = E1F4B8D94E30492C86043A17;
+			remoteGlobalIDString = 890889D9BDF84867A36CCCB0;
 			remoteInfo = snappy;
 		};
 		93E74151295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 5361C4CBABA543EBB337106A;
+			remoteGlobalIDString = 16B80C96B02B476AB63D4401;
 			remoteInfo = "spirv-cross-core";
 		};
 		93E74153295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = A6DFF07426D748B48F5E4C80;
+			remoteGlobalIDString = 29B76E3D38F54078B06E4461;
 			remoteInfo = "spirv-cross-cpp";
 		};
 		93E74155295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 58B78B107F37401190008B4F;
+			remoteGlobalIDString = 68544B2C37F64D4A96A84F03;
 			remoteInfo = "spirv-cross-glsl";
 		};
 		93E74157295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = C524A419E7C34E36ADF9059A;
+			remoteGlobalIDString = D746DEB3CE7D453FBF365DC0;
 			remoteInfo = "spirv-cross-hlsl";
 		};
 		93E74159295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D3AA84F11C694A139F72BB4F;
+			remoteGlobalIDString = 1679B5E6277B4602918C2988;
 			remoteInfo = "spirv-cross-msl";
 		};
 		93E7415B295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 80515FF6E02E4446A4DBA14A;
+			remoteGlobalIDString = 55CDD3FAF56642A6A0271B39;
 			remoteInfo = udis86;
 		};
 		93E7415D295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = E86EACA17C554CD5A4F9141C;
+			remoteGlobalIDString = 11274FB5B0BD450EA87A855D;
 			remoteInfo = vma;
 		};
 		93E7415F295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 91ED0782951C4905817E1EDB;
+			remoteGlobalIDString = 7CD48DCFF9414BA896FF5AC1;
 			remoteInfo = xbrz;
 		};
 		93E74161295B34350028EB94 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 761A606DA917491C8A06E98A;
+			remoteGlobalIDString = 9F9E20F02F9A421FBB2800DA;
 			remoteInfo = xxhash;
 		};
 		93E741E6295B67C70028EB94 /* PBXContainerItemProxy */ = {
@@ -600,6 +601,7 @@
 /* Begin PBXFileReference section */
 		9360C5A6294CB607000322B9 /* PVPPSSPPCore+Cheats.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "PVPPSSPPCore+Cheats.mm"; sourceTree = "<group>"; };
 		936FDBA72957F9080073628A /* libMoltenVK.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libMoltenVK.dylib; path = ../../MoltenVK/MoltenVK/dylib/iOS/libMoltenVK.dylib; sourceTree = "<group>"; };
+		93928433295DFFA900F2AD12 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
 		939B19422948B05F0024133A /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.0.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
 		93E74125295B31460028EB94 /* PPSSPPOGLViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPSSPPOGLViewController.swift; sourceTree = "<group>"; };
 		93E74126295B31460028EB94 /* PPSSPPVulkanViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PPSSPPVulkanViewController.swift; sourceTree = "<group>"; };
@@ -665,6 +667,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93928447295DFFA900F2AD12 /* CoreMedia.framework in Frameworks */,
 				93E741F4295B67C70028EB94 /* libMoltenVK_PPSSPP.dylib in Frameworks */,
 				93E741F5295B67C70028EB94 /* libz.1.2.11.tbd in Frameworks */,
 				93E741F6295B67C70028EB94 /* CoreAudio.framework in Frameworks */,
@@ -742,7 +745,7 @@
 				93E740E4295B2FD20028EB94 /* libMachineIndependent.a */,
 				93E740E6295B2FD20028EB94 /* libOGLCompiler.a */,
 				93E740E8295B2FD20028EB94 /* libOSDependent.a */,
-				93E740EA295B2FD20028EB94 /* PPSSPP.app */,
+				93E740EA295B2FD20028EB94 /* PPSSPP */,
 				93E740EC295B2FD20028EB94 /* libSPIRV.a */,
 				93E740EE295B2FD20028EB94 /* libarmips.a */,
 				93E740F0295B2FD20028EB94 /* libcityhash.a */,
@@ -835,6 +838,7 @@
 		B3C7621B20783242009950E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				93928433295DFFA900F2AD12 /* CoreMedia.framework */,
 				93E741E0295B5B240028EB94 /* libMoltenVK_PPSSPP.dylib */,
 				93E741DE295B5B0A0028EB94 /* libMoltenVK.dylib */,
 				93E74196295B386C0028EB94 /* libz.1.2.11.tbd */,
@@ -1064,9 +1068,10 @@
 			remoteRef = 93E740E7295B2FD20028EB94 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		93E740EA295B2FD20028EB94 /* PPSSPP.app */ = {
+		93E740EA295B2FD20028EB94 /* PPSSPP */ = {
 			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
+			fileType = "compiled.mach-o.executable";
+			name = PPSSPP;
 			path = PPSSPP.app;
 			remoteRef = 93E740E9295B2FD20028EB94 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;

@@ -4468,7 +4468,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncp ${SRCROOT}/PVPlayCore/Core/GSH_VulkanPlatformDefs.h ${SRCROOT}/Play-/Source/gs/GSH_Vulkan/\ncp ${SRCROOT}/PVPlayCore/Core/Loader.cpp ${SRCROOT}/Play-/deps/Framework/src/vulkan/Loader.cpp\n\ncp ${SRCROOT}/../../MoltenVK/MoltenVK/dylib/iOS/libMoltenVK.dylib ${SRCROOT}/lib/libMoltenVK_Play.dylib\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncp ${SRCROOT}/PVPlayCore/Core/GSH_VulkanPlatformDefs.h ${SRCROOT}/Play-/Source/gs/GSH_Vulkan/\ncp ${SRCROOT}/PVPlayCore/Core/Loader.cpp ${SRCROOT}/Play-/deps/Framework/src/vulkan/Loader.cpp\n\n#cp ${SRCROOT}/../../MoltenVK/MoltenVK/dylib/iOS/libMoltenVK.dylib ${SRCROOT}/lib/libMoltenVK_Play.dylib\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
