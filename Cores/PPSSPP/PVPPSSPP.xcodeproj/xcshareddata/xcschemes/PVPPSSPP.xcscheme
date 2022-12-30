@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B38C49D4201DBC8C006761ED"
+               BlueprintIdentifier = "93E741E4295B67C70028EB94"
                BuildableName = "PVPPSSPP.framework"
                BlueprintName = "PVPPSSPP"
                ReferencedContainer = "container:PVPPSSPP.xcodeproj">
@@ -31,7 +31,7 @@
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -50,7 +50,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B38C49D4201DBC8C006761ED"
+            BlueprintIdentifier = "93E741E4295B67C70028EB94"
             BuildableName = "PVPPSSPP.framework"
             BlueprintName = "PVPPSSPP"
             ReferencedContainer = "container:PVPPSSPP.xcodeproj">
