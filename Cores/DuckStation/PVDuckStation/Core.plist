@@ -15,8 +15,8 @@
 	<key>PVProjectURL</key>
 	<string>https://github.com/stenzek/duckstation/</string>
 	<key>PVProjectVersion</key>
-	<string>0.0.0</string>
+	<string>2023.01.11</string>
 	<key>PVDisabled</key>
-	<true/>
+	<false/>
 </dict>
 </plist>
