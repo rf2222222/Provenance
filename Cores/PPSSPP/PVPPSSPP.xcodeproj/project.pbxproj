@@ -98,6 +98,7 @@
 		93E74243295B70280028EB94 /* Core.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3C7622720783510009950E4 /* Core.plist */; };
 		93E7427B295C53890028EB94 /* OGLGraphicsContext.h in Sources */ = {isa = PBXBuildFile; fileRef = 93E7427A295C53890028EB94 /* OGLGraphicsContext.h */; };
 		93F28DC3295E264700E4D464 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F28DC2295E264600E4D464 /* MediaPlayer.framework */; };
+		B3AFCF9E2977A86400A01010 /* PVLogging in Frameworks */ = {isa = PBXBuildFile; productRef = B3AFCF9D2977A86400A01010 /* PVLogging */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -621,7 +622,6 @@
 		93E74193295B38140028EB94 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
 		93E74196295B386C0028EB94 /* libz.1.2.11.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.2.11.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX13.1.sdk/usr/lib/libz.1.2.11.tbd; sourceTree = DEVELOPER_DIR; };
 		93E741A0295B3E1E0028EB94 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ppsspp/assets; sourceTree = "<group>"; };
-		93E741DC295B5A630028EB94 /* ppsspp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ppsspp; sourceTree = "<group>"; };
 		93E741DE295B5B0A0028EB94 /* libMoltenVK.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libMoltenVK.dylib; path = ppsspp/ext/vulkan/iOS/Frameworks/libMoltenVK.dylib; sourceTree = "<group>"; };
 		93E741E0295B5B240028EB94 /* libMoltenVK_PPSSPP.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libMoltenVK_PPSSPP.dylib; path = lib/libMoltenVK_PPSSPP.dylib; sourceTree = "<group>"; };
 		93E74216295B67C70028EB94 /* PVPPSSPP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PVPPSSPP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -675,6 +675,7 @@
 			files = (
 				93928447295DFFA900F2AD12 /* CoreMedia.framework in Frameworks */,
 				93E741F4295B67C70028EB94 /* libMoltenVK_PPSSPP.dylib in Frameworks */,
+				B3AFCF9E2977A86400A01010 /* PVLogging in Frameworks */,
 				93E741F5295B67C70028EB94 /* libz.1.2.11.tbd in Frameworks */,
 				93E741F6295B67C70028EB94 /* CoreAudio.framework in Frameworks */,
 				93AEC060295E7FEB00F9381C /* GLKit.framework in Frameworks */,
@@ -814,7 +815,6 @@
 		B3C7620620783162009950E4 = {
 			isa = PBXGroup;
 			children = (
-				93E741DC295B5A630028EB94 /* ppsspp */,
 				93E741A0295B3E1E0028EB94 /* assets */,
 				B3135B2A26E4C6850047F338 /* PPSSPP.xcodeproj */,
 				B3447EBF218BE9DA00557ACE /* BuildFlags.xcconfig */,
@@ -932,6 +932,9 @@
 				93E741E5295B67C70028EB94 /* PBXTargetDependency */,
 			);
 			name = PVPPSSPP;
+			packageProductDependencies = (
+				B3AFCF9D2977A86400A01010 /* PVLogging */,
+			);
 			productName = PVReicast;
 			productReference = 93E74216295B67C70028EB94 /* PVPPSSPP.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2043,6 +2046,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B3AFCF9D2977A86400A01010 /* PVLogging */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PVLogging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = B3C7620720783162009950E4 /* Project object */;
 }

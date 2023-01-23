@@ -5,7 +5,6 @@
 //  Copyright (c) 2013 James Addyman. All rights reserved.
 //
 
-import CocoaLumberjackSwift
 import CoreSpotlight
 import PVLibrary
 import PVSupport
@@ -16,17 +15,23 @@ import SteamController
 import UIKit
 #endif
 
-@UIApplicationMain
+final class PVApplication: UIApplication {
+    var core: PVEmulatorCore?
+    override func sendEvent(_ event: UIEvent) {
+        if (core != nil) {
+            core!.send(event)
+        }
+
+        super.sendEvent(event)
+    }
+}
+
+
 final class PVAppDelegate: UIResponder, UIApplicationDelegate {
     internal var window: UIWindow?
     var shortcutItemGame: PVGame?
-    var fileLogger: DDFileLogger = DDFileLogger()
     let disposeBag = DisposeBag()
 
-    #if os(iOS) && !targetEnvironment(macCatalyst)
-        var _logViewController: PVLogViewController?
-    #endif
-    
     #if os(iOS)
     weak var jitScreenDelegate: JitScreenDelegate?
     weak var jitWaitScreenVC: JitWaitScreenViewController?

@@ -12,6 +12,7 @@
 #endif
 import PVLibrary
 import PVSupport
+import PVLogging
 
 import Reachability
 import RealmSwift
@@ -144,18 +145,21 @@ final class PVSettingsViewController: QuickTableViewController {
         let coreOptionsSection = Section(title: NSLocalizedString("Core Options", comment: "Core Options"), rows: cores)
 
         // MARK: -- Section : Saves
-        let saveRows: [TableRow] = [
+        var saveRows: [TableRow] = [
             PVSettingsSwitchRow(text: NSLocalizedString("Auto Save", comment: "Auto Save"), detailText: .subtitle("Auto-save game state on close. Must be playing for 30 seconds more."), key: \PVSettingsModel.autoSave, icon: .sfSymbol("autostartstop")),
             PVSettingsSwitchRow(text: NSLocalizedString("Timed Auto Saves", comment: "Timed Auto Saves"), detailText: .subtitle("Periodically create save states while you play."), key: \PVSettingsModel.timedAutoSaves, icon: .sfSymbol("clock.badge")),
-            PVSettingsSliderRow(text: NSLocalizedString("Auto-save Time", comment: "Auto-save Time"),
-                                              detailText: .subtitle("Number of minutes between timed auto saves."),
-                                              valueLimits: (min: 1.0, max: 30.0),
-                                              valueImages: (.sfSymbol("hare"), .sfSymbol("tortoise")),
-                                              key: \PVSettingsModel.timedAutoSaveInterval),
             PVSettingsSwitchRow(text: NSLocalizedString("Auto Load Saves", comment: "Auto Load Saves"), detailText: .subtitle("Automatically load the last save of a game if one exists. Disables the load prompt."), key: \PVSettingsModel.autoLoadSaves, icon: .sfSymbol("autostartstop.trianglebadge.exclamationmark")),
             PVSettingsSwitchRow(text: NSLocalizedString("Ask to Load Saves", comment: "Ask to Load Saves"), detailText: .subtitle("Prompt to load last save if one exists. Off always boots from BIOS unless auto load saves is active."), key: \PVSettingsModel.askToAutoLoad, icon: .sfSymbol("autostartstop.trianglebadge.exclamationmark"))
         ]
-
+#if os(iOS)
+        let autoSaveTimeRow = PVSettingsSliderRow(text: NSLocalizedString("Auto-save Time", comment: "Auto-save Time"),
+                                                  detailText: .subtitle("Number of minutes between timed auto saves."),
+                                                  valueLimits: (min: 1.0, max: 30.0),
+                                                  valueImages: (.sfSymbol("hare"), .sfSymbol("tortoise")),
+                                                  key: \PVSettingsModel.timedAutoSaveInterval)
+        saveRows.append(autoSaveTimeRow)
+#endif
+        
         let savesSection = Section(title: NSLocalizedString("Saves", comment: "Saves"), rows: saveRows)
 
         // MARK: -- Section : Audio/Video
@@ -599,23 +603,24 @@ final class PVSettingsViewController: QuickTableViewController {
         let extraInfoSection = Section(title: NSLocalizedString("3rd Party & Legal", comment: ""), rows: extraInfoRows)
 
         // Debug section
-        let debugRows: [TableRow] = [
-            NavigationRow(text: NSLocalizedString("Logs", comment: "Logs"),
-                                              detailText: .subtitle("Live logging information"),
-                                              icon: nil,
-                                              customization: nil,
-                                              action: { _ in
-                                                  self.logsActions()
-                                              })
-        ]
-
-        let debugSection = Section(title: NSLocalizedString("Debug", comment: ""), rows: debugRows)
+//        let debugRows: [TableRow] = [
+//            NavigationRow(text: NSLocalizedString("Logs", comment: "Logs"),
+//                                              detailText: .subtitle("Live logging information"),
+//                                              icon: nil,
+//                                              customization: nil,
+//                                              action: { _ in
+//                                                  self.logsActions()
+//                                              })
+//        ]
+//
+//        let debugSection = Section(title: NSLocalizedString("Debug", comment: ""),
+//                                   rows: debugRows)
 
         // Set table data
         tableContents = [appSection, coreOptionsSection, savesSection, avSection, metalSection, controllerSection, librarySection, librarySection2, betaSection, socialLinksSection, documentationSection, buildSection, extraInfoSection]
-        #if os(iOS)
-            tableContents.append(debugSection)
-        #endif
+//        #if os(iOS)
+//            tableContents.append(debugSection)
+//        #endif
     }
 
     func launchWebServerAction() {
@@ -687,10 +692,10 @@ You will need to completely relaunch the App to start the library rebuild proces
 
     func logsActions() {
         // Log Viewer
-        let logViewController = PVLogViewController(nibName: "PVLogViewController", bundle: nil)
-        logViewController.hideDoneButton()
-        navigationController?.pushViewController(logViewController, animated: true)
-        logViewController.hideDoneButton()
+//        let logViewController = PVLogViewController(nibName: "PVLogViewController", bundle: nil)
+//        logViewController.hideDoneButton()
+//        navigationController?.pushViewController(logViewController, animated: true)
+//        logViewController.hideDoneButton()
     }
 
     @IBAction func done(_: Any) {

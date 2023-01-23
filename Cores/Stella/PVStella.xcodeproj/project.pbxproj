@@ -10,12 +10,13 @@
 		B312F9C5292B0F2900286CFE /* FSNodeLIBRETRO.cxx in Sources */ = {isa = PBXBuildFile; fileRef = B312F9A6292B0F1E00286CFE /* FSNodeLIBRETRO.cxx */; };
 		B312F9C6292B0F2900286CFE /* libretro.cxx in Sources */ = {isa = PBXBuildFile; fileRef = B312F9A0292B0F1E00286CFE /* libretro.cxx */; };
 		B312F9C8292B104200286CFE /* StellaLIBRETRO.cxx in Sources */ = {isa = PBXBuildFile; fileRef = B312F9AA292B0F1E00286CFE /* StellaLIBRETRO.cxx */; };
-		B31B11592894A02D0044F0E6 /* PVStellaGameCore.h in Headers */ = {isa = PBXBuildFile; fileRef = B31B11572894A02D0044F0E6 /* PVStellaGameCore.h */; };
+		B31B11592894A02D0044F0E6 /* PVStellaGameCore.h in Headers */ = {isa = PBXBuildFile; fileRef = B31B11572894A02D0044F0E6 /* PVStellaGameCore.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B31B115C2894A02D0044F0E6 /* PVStellaGameCore.mm in Sources */ = {isa = PBXBuildFile; fileRef = B31B11582894A02D0044F0E6 /* PVStellaGameCore.mm */; };
 		B324C64D21921666009F4EDC /* PVSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B324C64C21921666009F4EDC /* PVSupport.framework */; };
 		B3271BDF276B8C660031AECC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3271BDE276B8C660031AECC /* OpenGL.framework */; platformFilters = (maccatalyst, macos, ); };
 		B3547B662058591E00CFF7D8 /* Core.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3547B652058591D00CFF7D8 /* Core.plist */; };
 		B38FB4C31C839BE500CD73BE /* PVStella.h in Headers */ = {isa = PBXBuildFile; fileRef = B38FB4C21C839BE500CD73BE /* PVStella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B3AFCF5C2977A68800A01010 /* PVLogging in Frameworks */ = {isa = PBXBuildFile; productRef = B3AFCF5B2977A68800A01010 /* PVLogging */; };
 		B3C96E861D62C1FE003F1E93 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3A8494F1C70FD6C008A4D89 /* Foundation.framework */; };
 		B3C96E871D62C203003F1E93 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3A8494B1C70FD63008A4D89 /* OpenGLES.framework */; platformFilters = (ios, tvos, watchos, ); };
 		B3C96E891D62C211003F1E93 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3A849491C70FD5E008A4D89 /* AudioToolbox.framework */; };
@@ -160,6 +161,7 @@
 		B3E6BF6D2894BDF100CF98C7 /* CompuMate.cxx in Sources */ = {isa = PBXBuildFile; fileRef = B3E6BE262894B2FB00CF98C7 /* CompuMate.cxx */; };
 		B3E6BF6E2894BE1B00CF98C7 /* ControllerDetector.cxx in Sources */ = {isa = PBXBuildFile; fileRef = B3E6BE312894B2FB00CF98C7 /* ControllerDetector.cxx */; };
 		B3E6BF702894BE4F00CF98C7 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B3E6BF6F2894BE4F00CF98C7 /* libz.tbd */; };
+		B3F7E5B229774F0000362B92 /* PVStellaGameCore+Options.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F7E5B129774F0000362B92 /* PVStellaGameCore+Options.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1642,6 +1644,7 @@
 		B3E6BEB32894B2FC00CF98C7 /* PointingDevice.hxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PointingDevice.hxx; sourceTree = "<group>"; };
 		B3E6BEB42894B2FC00CF98C7 /* FSNode.hxx */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FSNode.hxx; sourceTree = "<group>"; };
 		B3E6BF6F2894BE4F00CF98C7 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX12.3.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
+		B3F7E5B129774F0000362B92 /* PVStellaGameCore+Options.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PVStellaGameCore+Options.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1655,6 +1658,7 @@
 				B3271BDF276B8C660031AECC /* OpenGL.framework in Frameworks */,
 				B3E6BF292894B3F800CF98C7 /* libstella.a in Frameworks */,
 				B3C96E871D62C203003F1E93 /* OpenGLES.framework in Frameworks */,
+				B3AFCF5C2977A68800A01010 /* PVLogging in Frameworks */,
 				B3C96E861D62C1FE003F1E93 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2010,6 +2014,7 @@
 			children = (
 				B31B11572894A02D0044F0E6 /* PVStellaGameCore.h */,
 				B31B11582894A02D0044F0E6 /* PVStellaGameCore.mm */,
+				B3F7E5B129774F0000362B92 /* PVStellaGameCore+Options.swift */,
 			);
 			path = PVStellaGameCore;
 			sourceTree = "<group>";
@@ -4029,6 +4034,9 @@
 				B3E6BF2B2894B3F800CF98C7 /* PBXTargetDependency */,
 			);
 			name = PVStella;
+			packageProductDependencies = (
+				B3AFCF5B2977A68800A01010 /* PVLogging */,
+			);
 			productName = Stella;
 			productReference = B38FB4C01C839BE500CD73BE /* PVStella.framework */;
 			productType = "com.apple.product-type.framework";
@@ -4063,6 +4071,7 @@
 				TargetAttributes = {
 					B38FB4BF1C839BE500CD73BE = {
 						CreatedOnToolsVersion = 7.2.1;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -4100,6 +4109,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3F7E5B229774F0000362B92 /* PVStellaGameCore+Options.swift in Sources */,
 				B31B115C2894A02D0044F0E6 /* PVStellaGameCore.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4442,6 +4452,7 @@
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -4478,6 +4489,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4490,6 +4502,7 @@
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -4531,6 +4544,8 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4543,6 +4558,7 @@
 				ALLOW_TARGET_PLATFORM_SPECIALIZATION = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -4579,6 +4595,7 @@
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "watchsimulator watchos macosx iphonesimulator iphoneos driverkit appletvsimulator appletvos";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4,6";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -4719,6 +4736,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B3AFCF5B2977A68800A01010 /* PVLogging */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = PVLogging;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 089C1669FE841209C02AAC07 /* Project object */;
 }

@@ -10,6 +10,7 @@
 #import "PVLibretro.h"
 
 #import <PVSupport/PVSupport-Swift.h>
+@import PVLoggingObjC;
 
 #include "libretro.h"
 #ifdef HAVE_CONFIG_H
@@ -502,6 +503,7 @@ bool core_get_memory(retro_ctx_memory_info_t *info) {
 //    strongCurrent->_videoWidth  = geom->max_width;
 //    strongCurrent->_videoHeight = geom->max_height;
 //}
+
 
 bool core_load_game(retro_ctx_load_content_info_t *load_info)
 {
@@ -1458,7 +1460,7 @@ static void core_log(enum retro_log_level level, const char * fmt, ...) {
  */
 static bool environment_callback(unsigned cmd, void *data) {
     __strong PVLibRetroCore *strongCurrent = _current;
-    
+
     switch(cmd) {
         case RETRO_ENVIRONMENT_SET_ROTATION:
                                                         /* const unsigned * --
@@ -1702,8 +1704,12 @@ static bool environment_callback(unsigned cmd, void *data) {
             struct retro_variable *var = (struct retro_variable*)data;
 
            void *value = [strongCurrent getVariable:var->key];
-            var->value = value;
-            return true;
+            if(value) {
+                var->value = value;
+                return true;
+            } else {
+                return false;
+            }
             break;
         }
         case RETRO_ENVIRONMENT_SET_MINIMUM_AUDIO_LATENCY:
@@ -2193,13 +2199,15 @@ static int16_t RETRO_CALLCONV input_state_callback(unsigned port, unsigned devic
 }
 
 -(void)coreInit {
-    core->retro_init();
+    GET_CURRENT_OR_RETURN();
 
-    core->retro_set_audio_sample(audio_callback);
-    core->retro_set_audio_sample_batch(audio_batch_callback);
-    core->retro_set_video_refresh(video_callback);
-    core->retro_set_input_poll(input_poll_callback);
-    core->retro_set_input_state(input_state_callback);
+    current->core->retro_init();
+
+    current->core->retro_set_audio_sample(audio_callback);
+    current->core->retro_set_audio_sample_batch(audio_batch_callback);
+    current->core->retro_set_video_refresh(video_callback);
+    current->core->retro_set_input_poll(input_poll_callback);
+    current->core->retro_set_input_state(input_state_callback);
 }
 
 - (BOOL)loadFileAtPath:(NSString *)path error:(NSError**)error {
@@ -2227,6 +2235,7 @@ static int16_t RETRO_CALLCONV input_state_callback(unsigned port, unsigned devic
     info2.info = &info;
     info2.content = nil;
     info2.special = nil;
+
     BOOL loaded = core_load_game(&info2);
    
     if(loaded) {

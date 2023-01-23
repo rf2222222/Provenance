@@ -8,6 +8,7 @@
 import Foundation
 import PVSupport
 import RealmSwift
+import PVLogging
 
 public struct SystemDictionaryKeys {
     public static let BIOSEntries = "PVBIOSNames"
@@ -276,6 +277,7 @@ public final class PVEmulatorConfiguration: NSObject {
         #endif
     }()
 
+    @objc
     public static let cachesPath: URL = {
         let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
         return URL(fileURLWithPath: paths.first!, isDirectory: true)

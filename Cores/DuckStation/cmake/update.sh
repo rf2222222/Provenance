@@ -6,7 +6,9 @@
 ### 2. a few nested targets put custom library linker search paths, delete those.
 ### `common`. `core` and a couple others change `OTHER_LIBTOOLFLAGS`
 ### 3. Delete the `common-tests` .app target for codesign reasons. Not used anyway.
-###
+### 4. (Optional) Add preprocessor definitions to upstream project:
+### $(inherited) WITH_RECOMPILER=1 WITH_MMAP_FASTMEM=1
+### TODO: Update this script to do this automatically.
 
 export Vulkan_LIBRARY=1.3.217 # Version of Vulkan SDK
 export VULKAN_SDK="./" # Path to Vulkan SDK
@@ -17,6 +19,7 @@ export Vulkan_LIBRARY="./"
 ln -s ../../../Cores/Dolphin/dolphin-ios/Externals/MoltenVK lib
 
 rm CMakeCache.txt
+
 echo "VULKAN_SDK="${VULKAN_SDK}
 cmake ../duckstation -G Xcode \
 -DCMAKE_BUILD_TYPE=Release \
@@ -37,6 +40,7 @@ cmake ../duckstation -G Xcode \
 -DENABLE_CHEEVOS=OFF \
 -DUSE_SDL2=OFF \
 -DUSE_X11=OFF \
+-DBUILD_REGTEST=OFF \
 -DUSE_WAYLAND=OFF \
 -DCMAKE_C_FLAGS_RELEASE="-Os -DNDEBUG" \
 -DCMAKE_CXX_FLAGS_RELEASE="-Os -DNDEBUG" \

@@ -20,6 +20,10 @@ public final class PVCore: Object {
     public dynamic var projectVersion = ""
     public dynamic var disabled = false
 
+    public lazy var hasCoreClass: Bool = {
+        return NSClassFromString(principleClass) != nil
+    }()
+
     // Reverse links
     public var saveStates = LinkingObjects(fromType: PVSaveState.self, property: "core")
 
@@ -37,6 +41,10 @@ public final class PVCore: Object {
 
     public override static func primaryKey() -> String? {
         return "identifier"
+    }
+
+    public override class func ignoredProperties() -> [String] {
+        ["hasCoreClass"]
     }
 }
 
@@ -65,9 +73,9 @@ internal extension Core {
         principleClass = core.principleClass
         disabled = core.disabled
         // TODO: Supported systems
-		DLOG("\(core.projectName)")
-		print("loadcore: \(core.projectName) class: \(core.principleClass)")
-        project = CoreProject(name: core.projectName, url: URL(string: core.projectURL)!, version: core.projectVersion)
+        let url = URL(string: core.projectURL) ?? URL(string: "https://provenance-emu.com")!
+		print("loadcore: \(core.projectName) class: \(core.principleClass) identifier: \(identifier) disable: \(disabled)")
+        project = CoreProject(name: core.projectName, url: url, version: core.projectVersion)
     }
 }
 
