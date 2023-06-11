@@ -18,6 +18,8 @@ variables:
   CertificateFileName: 'developer_cert.p12'
   ExportOptionsFileName: 'options.plist'
   ExportMethod: 'development'
+  packageApp: true
+  ExportPath: output/iphoneos
   xcode-version: '14.1'
   xcodeVersion: specifyPath  # Options: 8, 9, 11, 12, default, specifyPath
   sdk: 'iphoneos'
@@ -59,18 +61,20 @@ jobs:
 
     - task: Xcode@5
       inputs:
+        actions: 'clean build'
         scheme: '$(scheme)'
         xcWorkspacePath: '$(xcWorkspacePath)'
         xcodeDeveloperDir: /Applications/Xcode_14.1.app/Contents/Developer
         xcodeVersion: specifyPath
         exportPath: '$(agent.buildDirectory)/output/$(sdk)/$(configuration)'
-        packageApp: false
+        packageApp: true
         destinationPlatformOption: $(destinationPlatformOption)
         useXcpretty: false
         configuration: '$(configuration)'
-        exportMethod: '$(ExportMethod)'
-        destinationSimulators: 'iPhone 11 Pro'
-        # signingOption: 'manual'
+        exportPath: '$(ExportPath)'
+        #exportMethod: '$(ExportMethod)'
+        # destinationSimulators: 'iPhone 11 Pro'
+        signingOption: 'manual'
         # signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
         # provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
       displayName: Building project $(scheme)
