@@ -19,7 +19,6 @@ variables:
   ExportOptionsFileName: 'options.plist'
   ExportMethod: 'development'
   packageApp: true
-  ExportPath: output/iphoneos
   xcode-version: '14.1'
   xcodeVersion: specifyPath  # Options: 8, 9, 11, 12, default, specifyPath
   sdk: 'iphoneos'
@@ -71,7 +70,6 @@ jobs:
         destinationPlatformOption: $(destinationPlatformOption)
         useXcpretty: false
         configuration: '$(configuration)'
-        exportPath: '$(ExportPath)'
         #exportMethod: '$(ExportMethod)'
         # destinationSimulators: 'iPhone 11 Pro'
         signingOption: 'manual'
