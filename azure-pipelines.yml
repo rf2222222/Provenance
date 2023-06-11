@@ -64,12 +64,12 @@ jobs:
         xcodeDeveloperDir: /Applications/Xcode_14.1.app/Contents/Developer
         xcodeVersion: specifyPath
         exportPath: '$(agent.buildDirectory)/output/$(sdk)/$(configuration)'
-        packageApp: true
+        packageApp: false
         destinationPlatformOption: $(destinationPlatformOption)
         useXcpretty: false
         configuration: '$(configuration)'
         exportMethod: '$(ExportMethod)'
-        # destinationSimulators: 'iPhone 11 Pro'
+        destinationSimulators: 'iPhone 11 Pro'
         # signingOption: 'manual'
         # signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
         # provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
