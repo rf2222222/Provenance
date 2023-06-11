@@ -12,7 +12,7 @@ variables:
   ${{ if contains('main,develop,release', variables['Build.SourceBranchName']) }}:
     configuration: 'Release'
   ${{ if not(contains('main,develop,release', variables['Build.SourceBranchName'])) }}:
-    configuration: 'Debug'
+    configuration: 'Release'
   name: $(Build.SourceBranchName)
   tag: $(Build.BuildNumber)
   CertificateFileName: 'developer_cert.p12'
@@ -69,7 +69,7 @@ jobs:
         useXcpretty: false
         configuration: '$(configuration)'
         exportMethod: '$(ExportMethod)'
-        destinationSimulators: 'iPhone 11 Pro'
+        #destinationSimulators: 'iPhone 11 Pro'
         # signingOption: 'manual'
         # signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
         # provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
