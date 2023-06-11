@@ -64,13 +64,13 @@ jobs:
         scheme: '$(scheme)'
         xcWorkspacePath: '$(xcWorkspacePath)'
         xcodeDeveloperDir: /Applications/Xcode_14.1.app/Contents/Developer
-        xcodeVersion: specifyPath
-        exportPath: '$(agent.buildDirectory)/output/$(sdk)/$(configuration)'
-        packageApp: true
-        destinationPlatformOption: $(destinationPlatformOption)
+        xcodeVersion: '14'
+        # exportPath: '$(agent.buildDirectory)/output/$(sdk)/$(configuration)'
+        # packageApp: false
+        # destinationPlatformOption: $(destinationPlatformOption)
         useXcpretty: false
         configuration: '$(configuration)'
-        #exportMethod: '$(ExportMethod)'
+        # exportMethod: '$(ExportMethod)'
         # destinationSimulators: 'iPhone 11 Pro'
         signingOption: 'manual'
         # signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
